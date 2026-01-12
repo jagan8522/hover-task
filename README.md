@@ -4,3 +4,6 @@ Added hover animation improvement
 
 
 newbrach is created
+
+
+version checking in the git repository
