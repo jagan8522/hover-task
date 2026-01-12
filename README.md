@@ -7,3 +7,5 @@ newbrach is created
 
 
 version checking in the git repository
+
+version2 is added
