@@ -21,3 +21,5 @@ All notable changes will be listed here.
 1) ### 🚀 Features
 
 ## ✨ v1.1.1 – What’s New
+
+## ✨ v1.1.2 – What’s New
