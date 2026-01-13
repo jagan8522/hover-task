@@ -17,8 +17,8 @@ jobs:
         run: |
           echo "" >> CHANGELOG.md
           echo "## ✨ Latest Update" >> CHANGELOG.md
-          echo "- Improved performance" >> CHANGELOG.md
-          echo "- Better user experience" >> CHANGELOG.md
+          echo "- 📄 Documentation updated" >> CHANGELOG.md
+          echo "- ℹ️ New information added for users" >> CHANGELOG.md
 
       # Step 3: Commit the updated changelog
       - name: Commit CHANGELOG
