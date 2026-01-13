@@ -1,0 +1,31 @@
+name: Client Update Automation
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Get repository code
+      - uses: actions/checkout@v4
+
+      # Step 2: Write client-friendly update
+      - name: Write client-friendly update
+        run: |
+          echo "" >> CHANGELOG.md
+          echo "## ✨ Latest Update" >> CHANGELOG.md
+          echo "- Improved performance" >> CHANGELOG.md
+          echo "- Better user experience" >> CHANGELOG.md
+
+      # Step 3: Commit the updated changelog
+      - name: Commit CHANGELOG
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add CHANGELOG.md
+          git commit -m "Update changelog for clients"
+          git push
+
