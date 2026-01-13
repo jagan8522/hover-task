@@ -9,23 +9,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Get repository code
-      - uses: actions/checkout@v4
+      # 1️⃣ Checkout the SAME branch the release was created from
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.target_commitish }}
 
-      # Step 2: Write client-friendly update
-      - name: Write client-friendly update
+      # 2️⃣ Generate client-friendly changelog dynamically
+      - name: Generate client changelog
         run: |
           echo "" >> CHANGELOG.md
-          echo "## ✨ Latest Update" >> CHANGELOG.md
-          echo "- 📄 Documentation updated" >> CHANGELOG.md
-          echo "- ℹ️ New information added for users" >> CHANGELOG.md
+          echo "## ✨ v${{ github.event.release.tag_name }} – What’s New" >> CHANGELOG.md
 
-      # Step 3: Commit the updated changelog
-      - name: Commit CHANGELOG
+          echo "" >> CHANGELOG.md
+          echo "### 🚀 New Features" >> CHANGELOG.md
+
+          FEATURES=$(echo "${{ github.event.release.body }}" | grep -i "feature" | sed 's/^- //')
+
+          COUNT=1
+          if [ -n "$FEATURES" ]; then
+            while IFS= read -r feature; do
+              echo "$COUNT) $feature" >> CHANGELOG.md
+              COUNT=$((COUNT + 1))
+            done <<< "$FEATURES"
+          else
+            echo "- No new features in this release" >> CHANGELOG.md
+          fi
+
+          echo "" >> CHANGELOG.md
+          echo "### 📄 Documentation" >> CHANGELOG.md
+          if echo "${{ github.event.release.body }}" | grep -qi "documentation"; then
+            echo "- Documentation updated" >> CHANGELOG.md
+          fi
+
+          echo "" >> CHANGELOG.md
+          echo "### 🐛 Bug Fixes" >> CHANGELOG.md
+          if echo "${{ github.event.release.body }}" | grep -qi "bug"; then
+            echo "- Bug fixes and stability improvements" >> CHANGELOG.md
+          fi
+
+      # 3️⃣ Commit & push BACK to the SAME branch
+      - name: Commit and push changelog
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add CHANGELOG.md
-          git commit -m "Update changelog for clients"
-          git push
+          git commit -m "Update changelog for clients (v${{ github.event.release.tag_name }})"
+          git push origin ${{ github.event.release.target_commitish }}
+
 
