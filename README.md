@@ -14,3 +14,7 @@ version 4 is added and checking that clint side is getting the notes
 
 
 testing the futures
+
+
+Added setup instructions for new users.
+and it will show the view of what we updated
