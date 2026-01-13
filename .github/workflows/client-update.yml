@@ -32,8 +32,9 @@ jobs:
           DOCS=()
           BUGS=()
 
-          # Extract PR numbers from release notes (e.g. #12)
-          PR_NUMBERS=$(echo "$BODY" | grep -oE '#[0-9]+' | tr -d '#')
+          # 🔑 Extract PR numbers from GitHub auto release notes
+          # Works with format: https://github.com/<org>/<repo>/pull/13
+          PR_NUMBERS=$(echo "$BODY" | grep -oE '/pull/[0-9]+' | awk -F/ '{print $NF}')
 
           for PR in $PR_NUMBERS; do
             PR_DATA=$(curl -s \
@@ -58,7 +59,7 @@ jobs:
           done
 
           echo "" >> CHANGELOG.md
-          echo "## ✨ $TAG – What’s New" >> CHANGELOG.md
+          echo "## ✨ ${TAG} – What’s New" >> CHANGELOG.md
 
           if [ ${#FEATURES[@]} -gt 0 ]; then
             echo "" >> CHANGELOG.md
@@ -92,8 +93,9 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add CHANGELOG.md
-          git commit -m "Update changelog for clients (${{ github.event.release.tag_name }})" || echo "No changes to commit"
+          git commit -m "Update changelog for clients (${TAG})" || echo "No changes to commit"
           git push origin ${{ github.event.release.target_commitish }}
+
 
 
 
