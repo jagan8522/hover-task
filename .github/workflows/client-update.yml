@@ -9,10 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Get repository code
-      - uses: actions/checkout@v4
+      # 1️⃣ Checkout repository on a real branch
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: review_final   # 🔴 CHANGE THIS if your branch is review_final
 
-      # Step 2: Write client-friendly update
+      # 2️⃣ Write client-friendly update
       - name: Write client-friendly update
         run: |
           echo "" >> CHANGELOG.md
@@ -20,12 +23,13 @@ jobs:
           echo "- 📄 Documentation updated" >> CHANGELOG.md
           echo "- ℹ️ New information added for users" >> CHANGELOG.md
 
-      # Step 3: Commit the updated changelog
-      - name: Commit CHANGELOG
+      # 3️⃣ Commit and push changes
+      - name: Commit and push CHANGELOG
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add CHANGELOG.md
           git commit -m "Update changelog for clients"
-          git push
+          git push origin review_final   # 🔴 SAME BRANCH NAME HERE
+
 
