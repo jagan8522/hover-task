@@ -14,3 +14,8 @@ All notable changes will be listed here.
 ### 📄 Documentation
 
 ### 🐛 Bug Fixes
+
+## ✨ v1.1.0 – What’s New
+
+### 🚀 New Features
+1) ### 🚀 Features
